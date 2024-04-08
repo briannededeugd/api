@@ -1,0 +1,172 @@
+@font-face {
+  font-family: Montserrat;
+  src: url('/fonts/Montserrat-VariableFont_wght.ttf');
+}
+
+@font-face {
+  font-family: ConcertOne;
+  src: url('/fonts/ConcertOne-Regular.ttf');
+}
+
+.blob {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 450px;
+    height: 450px;
+    border-radius: 100%;
+    background-image: linear-gradient(#1100ff 10%, #ff00f2);
+    filter: blur(250px);
+    transition: all 450ms ease-out;
+    position: fixed;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    transform: translate(calc(-50% + 15px), -50%);
+    z-index: -1;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+  background-color: #181818;
+}
+
+body * {
+  color: white;
+}
+
+h1, h2, h3 {
+  font-family: 'ConcertOne', sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0 1em;
+}
+
+li {
+  padding: 5px 15px;
+  border-radius: 5px;
+  max-width: max-content;
+}
+
+.sent {
+  margin-left: auto;
+  background-color: #d7b1f7;
+  align-self: flex-end;
+  color: black;
+
+  &::after {
+    display: inline-block;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    box-shadow: 5px 5px 5px 0 green;
+  }
+}
+
+.sent + .time {
+  text-align: right;
+  padding-right: 5px;
+}
+
+.received {
+  background-color: rgba(0, 0, 0, 0.7);
+  align-self: flex-start;
+}
+
+.received + .time {
+  text-align: left;
+  padding-left: 5px;
+}
+
+.time {
+  display: block;
+  font-size: .65em;
+  margin: 5px 0 10px;
+}
+
+.content {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.3px);
+  -webkit-backdrop-filter: blur(7.3px);
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  
+  width: 50%;
+  height: 75vh;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+    flex-direction: column;
+}
+
+.content .data {
+  background: rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  position: absolute;
+  height: 60px;
+
+  border-radius: 16px 16px 0 0;
+  text-align: center;
+  width: 100%;
+}
+
+.chat {
+  position: relative;
+  flex-grow: 1;
+  margin-top: 60px;
+  margin-bottom: 65px;
+  padding-bottom: 1em;
+  max-height: 100%;
+  overflow-y: scroll;
+}
+
+#messages {
+  max-height: 100%;
+  overflow-y: scroll;
+}
+
+.content form {
+  position: absolute;
+  bottom: 0;
+  overflow: hidden;
+
+  border-radius: 0 0 16px 16px;
+  width: 100%;
+  height: 65px;
+}
+
+form input {
+  width: 100%;
+  border: none;
+  color: white;
+  height: 5vh;
+  padding: 1em;
+
+  background: rgba(0, 0, 0, 0.25);
+}
+
+form button {
+  position: absolute;
+  top: 50%;
+  right: 1em;
+  transform: translateY(-50%);
+
+  background-color: #d7b1f7;
+  cursor: pointer;
+  border: none;
+  padding: .5em 1em;
+  border-radius: 50px;
+}
+
+form button:hover {
+  background-color: #9577ad;
+}
