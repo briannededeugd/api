@@ -1,7 +1,7 @@
 {
   "scripts": {
     "devStart": "node server.mjs",
-    "build": "npx babel public -d dist"
+    "build": "npx babel-cli public -d dist"
   },
   "dependencies": {
     "compression": "^1.7.4",
