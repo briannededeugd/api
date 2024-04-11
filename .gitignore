@@ -1,2 +1,8 @@
 _DS.Store
 node_modules
+.vercel
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault

@@ -5,12 +5,18 @@
 		<link rel="stylesheet" href="/styles/style.css" />
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 	</head>
 	<body>
 		<div class="blob"></div>
 
 		<section class="content">
 			<section class="data">
+				<a href="/">
+					<span class="material-symbols-outlined"> home </span>
+				</a>
 				<h1>KozyKorner</h1>
 			</section>
 
@@ -26,48 +32,6 @@
 			</form>
 		</section>
 
-		<script>
-			var socket = io();
-			var chat = document.getElementById("messages");
-
-			$(function () {
-				var form = $("#form");
-				var input = $("#input");
-				var messages = $("#messages");
-
-				form.submit(function () {
-					socket.emit("chat message", input.val());
-					input.val("");
-					return false;
-				});
-
-				socket.on("chat message", function (data) {
-					var msgClass = data.sender === socket.id ? "sent" : "received";
-					var messageTime = new Date().toLocaleTimeString([], {
-						hour: "2-digit",
-						minute: "2-digit",
-					});
-					var messageElement = $("<li class='" + msgClass + "'>").text(
-						data.msg
-					);
-					var messageTimeStamp = $("<span class='time'>").text(messageTime);
-					// .append($("<span class='time'>").text(messageTime));
-					messages.append(messageElement, messageTimeStamp);
-					scrollToBottom();
-				});
-			});
-
-			function scrollToBottom() {
-				chat.scrollTop = chat.scrollHeight;
-			}
-
-			var cursor = document.querySelector(".blob");
-
-			document.addEventListener("mousemove", function (e) {
-				var x = e.clientX;
-				var y = e.clientY;
-				cursor.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
-			});
-		</script>
+		<script async type="module" src="/scripts/script.js"></script>
 	</body>
 </html>
