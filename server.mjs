@@ -28,7 +28,7 @@ const io = new Server(server); // Create Socket.IO server
  *               MONGODB
  *=============================================**/
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 2000;
 import { MongoClient, ServerApiVersion } from "mongodb";
 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@apis.sobzsh5.mongodb.net/?retryWrites=true&w=majority&appName=apis`;

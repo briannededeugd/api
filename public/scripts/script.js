@@ -2,7 +2,7 @@ console.log("HERE'S THE WINDOW:", window.location.origin);
 // Determine the socket.io URL based on the environment
 var socketUrl =
 	window.location.hostname === "localhost"
-		? "http://localhost:3000"
+		? "http://localhost:2800"
 		: window.location.origin;
 
 // Load the socket.io library
@@ -29,9 +29,9 @@ script.onload = function () {
 		messages.append(dateElement);
 
 		// Disclaimer at the top of the chat
-		var disclaimer = $("<p class='disclaimer'>").text(
-			"This conversation disappears when you exit or refresh the chat."
-		);
+		var disclaimer = $("<p class='disclaimer'>")
+			.text("This conversation disappears when you exit or refresh the chat.")
+			.css("display", "block");
 		messages.append(disclaimer);
 
 		form.submit(function () {
@@ -49,7 +49,7 @@ script.onload = function () {
 			var messageElement = $("<li class='" + msgClass + "'>").text(data.msg);
 			var messageTimeStamp = $("<span class='time'>").text(messageTime);
 			messages.append(messageElement, messageTimeStamp);
-			disclaimer.style.opacity = 0;
+			disclaimer.css("display", "none");
 			scrollToBottom();
 		});
 	});
