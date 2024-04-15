@@ -2,46 +2,113 @@
 <html>
 	<head>
 		<title>KozyKorner</title>
-		<link rel="stylesheet" href="/styles/home.css" />
+		<link rel="stylesheet" href="/styles/style.css" />
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 	</head>
 	<body>
-		<div class="gradient-bg">
-            <svg xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <filter id="goo">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
-                <feBlend in="SourceGraphic" in2="goo" />
-                </filter>
-            </defs>
-            </svg>
-            <div class="gradients-container">
-            <div class="g1"></div>
-            <div class="g2"></div>
-            <div class="g3"></div>
-            <div class="g4"></div>
-            <div class="g5"></div>
-            <div class="interactive"></div>
-        </div>
+		<nav class="navbar">
+			<ul>
+				<a href="/">
+					<li id="logo">KozyKorner</li>
+				</a>
 
-		<section class="hero">
-			<h5>A BRIANNE © PRODUCTION</h5>
-			<h1>KozyKorner</h1>
-			<h2>Where you sit back and chat without distractions.</h2>
+				<a href="">
+					<li id="">
+						<span class="material-symbols-outlined"> accessibility_new </span>
+					</li>
+				</a>
 
-			<p>
-				Welcome to KozyKorner! Have you been looking for a
-				straight-to-the-point, web-based chat application? Look no further!
-				KozyKorner allows you to sit back and relax, easily striking up
-				conversations with whoever you invite. Talking to your loved ones should
-				be <em>eazy</em>, after all!
-			</p>
+				<a href="">
+					<li id="">
+						<span class="material-symbols-outlined"> rss_feed </span>
+					</li>
+				</a>
+			</ul>
+		</nav>
 
-			<a href="/chatroom">Start a chat</a>
-		</section>
+		<main>
+			<section class="homecontent">
+				<section class="hero">
+					<div>
+						<h1>
+							KozyKorner is a
+							<span id="chatapp">chat application</span> designed to get to the
+							<span id="thepoint">point</span>!
+						</h1>
 
-        <script type="module" src='/scripts/gradient.js'></script>
+						<p>
+							Say goodbye to data-leaks, a million distractions and unused
+							features taking up all of your space - and say hello to the
+							intuitive interface of KozyKorner.
+						</p>
+					</div>
+
+					<a href="/overview">
+						<p>View your chats</p>
+						<span class="material-symbols-outlined"> north_east </span>
+					</a>
+				</section>
+
+				<section class="images">
+					<div class="fast">
+						<div class="card-content">
+							<h2>
+								<span>Reliably</span><br />
+								↝ Fast
+							</h2>
+
+							<div class="card-info">
+								<p>
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. A
+									suscipit maiores sapiente voluptatibus quos commodi
+									consequatur reprehenderit doloremque nisi amet est pariatur
+									veniam sint tempore maxime ratione, fuga vero magnam?
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="personal">
+						<div class="card-content">
+							<h2>
+								<span>Reliably</span><br />
+								𖦹 Personal
+							</h2>
+
+							<div class="card-info">
+								<p>
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. A
+									suscipit maiores sapiente voluptatibus quos commodi
+									consequatur reprehenderit doloremque nisi amet est pariatur
+									veniam sint tempore maxime ratione, fuga vero magnam?
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="secure">
+						<div class="card-content">
+							<h2>
+								<span>Reliably</span><br />
+								ꗃ Secure
+							</h2>
+
+							<div class="card-info">
+								<p>
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. A
+									suscipit maiores sapiente voluptatibus quos commodi
+									consequatur reprehenderit doloremque nisi amet est pariatur
+									veniam sint tempore maxime ratione, fuga vero magnam?
+								</p>
+							</div>
+						</div>
+					</div>
+				</section>
+			</section>
+		</main>
+
+		<script src="/scripts/flip.js"></script>
 	</body>
 </html>

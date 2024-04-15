@@ -93,6 +93,10 @@ app.get("/chatroom", (req, res) => {
 	res.sendFile(path.join(__dirname + "/views" + "/pages" + "/chat.html"));
 });
 
+app.get("/overview", (req, res) => {
+	res.sendFile(path.join(__dirname + "/views" + "/pages" + "/overview.html"));
+});
+
 server.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
 });
