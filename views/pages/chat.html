@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>KozyKorner Chat</title>
+		<link rel="stylesheet" href="/styles/style.css" />
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+	</head>
+	<body>
+		<div class="blob"></div>
+
+		<section class="content">
+			<section class="data">
+				<a href="/">
+					<span class="material-symbols-outlined"> home </span>
+				</a>
+				<h1>KozyKorner</h1>
+			</section>
+
+			<section class="chat">
+				<ul id="messages"></ul>
+			</section>
+
+			<form id="form" action="">
+				<input
+					id="input"
+					autocomplete="off"
+					placeholder="Type message" /><button>SEND</button>
+			</form>
+		</section>
+
+		<script async type="module" src="/scripts/script.js"></script>
+	</body>
+</html>
