@@ -20,7 +20,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-app.use(express.static("/public"));
+app.use(express.static(__dirname + "/public"));
 const server = http.createServer(app); // Create HTTP server using Express app
 const io = new Server(server); // Create Socket.IO server
 
@@ -86,11 +86,11 @@ const pusher = new Pusher({
  *               PAGES
  *=============================================**/
 app.get("/", (req, res) => {
-	res.sendFile(path.join("/" + "views", "pages", "chat.html"));
+	res.sendFile(__dirname + "/index.html");
 });
 
 app.get("/chatroom", (req, res) => {
-	res.sendFile(__dirname + "/index.html");
+	res.sendFile(path.join(__dirname + "/views" + "/pages" + "/chat.html"));
 });
 
 server.listen(port, () => {
