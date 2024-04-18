@@ -601,7 +601,96 @@ main > .homecontent > .images > div:nth-of-type(3) {
   height: 100%;
   width: 20vw;
   background-color: #000;
+
+  .top-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5em 1em;
+    width: 90%;
+
+    h2 {
+      font-size: clamp(1.2em, 1em + .5vw, 2em);
+      margin: .35em 0;
+    }
+
+    span {
+      cursor: pointer;
+      transition: all .2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.5);
+      }
+    }
+  }
+
+  input[type=search] {
+    width: 100%;
+    padding: .5em 1em;
+    color: black;
+  }
+
+  .other-chats > a > div {
+    display: flex;
+    align-items: center;
+    padding: 1em;
+    gap: 1em;
+    background-color: #161616;
+    margin-bottom: .25em;
+    cursor: pointer;
+
+    em {
+      color: var(--color-lilac);
+    }
+
+    &:hover {
+      background-color: #242323;
+    }
+
+    img {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+    }
+
+    div {
+      width: 100%;
+
+      div {
+        margin-bottom: 0;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 100%;
+
+        h3 {
+          margin: 0;
+          margin-bottom: .5em;
+          font-size: clamp(1em, .5em + .65vw, 1.4em);
+        }
+
+        h5 {
+          font-size: clamp(.60em, .25em + .5vw, 1.25em);
+          margin: 0;
+          font-weight: 300;
+          padding-top: .65em;
+        }
+      }
+
+      p {
+        margin: 0;
+        font-size: clamp(.75em, .5em + .5vw, 1.25em);
+      }
+    }
+  }
+
+  #new-chat {
+    background-color: #242323;
+  }
+
 }
+
+
 
 
 
@@ -662,6 +751,9 @@ main > .homecontent > .images > div:nth-of-type(3) {
   opacity: 1;
   font-style: italic;
 }
+
+
+
 
 /* ----------------------- */
 /* GENERAL CONTENT ON PAGE */
@@ -749,11 +841,12 @@ main > .homecontent > .images > div:nth-of-type(3) {
 form input {
   width: 100%;
   border: none;
-  color: var(--color-white);
+  color: var(--color-black);
   height: 5vh;
   padding: 1em;
 
-  background: var(--color-black-transparency);
+  /* background: var(--color-black-transparency); */
+  background-color: var(--color-white);
 }
 
 form input:focus-visible {
