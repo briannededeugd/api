@@ -54,16 +54,25 @@ const client = new MongoClient(uri, {
  *               SOCKET.IO
  *=============================================**/
 
+// When a new user connects to the server
 io.on("connection", (socket) => {
+	// Log a message to the server console indicating that a user has connected,
+	// along with the unique ID of the socket (connection)
 	console.log("a user connected", socket.id);
 
+	// When the user disconnects from the server
 	socket.on("disconnect", () => {
+		// Log a message to the server console indicating that the user has disconnected
 		console.log("user disconnected");
 	});
 
+	// When the server receives a "chat message" event from a connected user
 	socket.on("chat message", (msg) => {
+		// Log the received message to the server console
 		console.log("message: " + msg);
-		// Emit message along with sender information
+
+		// Emit (send) the received message back to all connected clients,
+		// along with information about the sender (in this case, the unique ID of the socket)
 		io.emit("chat message", { msg: msg, sender: socket.id });
 	});
 });
@@ -79,7 +88,6 @@ const pusher = new Pusher({
 	key: process.env.PUSHER_KEY,
 	secret: process.env.PUSHER_SECRET,
 	cluster: process.env.PUSHER_CLUSTER,
-	// Additional configuration options if needed
 });
 
 /**============================================
