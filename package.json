@@ -7,6 +7,10 @@
     "node": "20.x"
   },
   "dependencies": {
+    "@babel/cli": "^7.24.1",
+    "@babel/core": "^7.24.4",
+    "@babel/preset-env": "^7.24.4",
+    "babel-cli": "^6.26.0",
     "compression": "^1.7.4",
     "connect-mongodb-session": "^5.0.0",
     "dotenv": "^16.4.5",
@@ -18,10 +22,6 @@
     "nodemon": "^3.1.0",
     "passport": "^0.7.0",
     "pusher": "^5.2.0",
-    "socket.io": "^4.7.5",
-    "@babel/cli": "^7.24.1",
-    "@babel/core": "^7.24.4",
-    "@babel/preset-env": "^7.24.4",
-    "babel-cli": "^6.26.0"
+    "socket.io": "^4.7.5"
   }
 }

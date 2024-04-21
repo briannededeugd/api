@@ -1,4 +1,8 @@
 console.log("HERE'S THE WINDOW:", window.location.origin);
+var messageHistory = localStorage.getItem("messageHistory");
+var chatContainer = document.getElementsByClassName("chat");
+var lastMessage = document.querySelector("#new-chat > div > p");
+
 // Determine the socket.io URL based on the environment
 var socketUrl =
 	window.location.hostname === "localhost"
@@ -15,6 +19,7 @@ script.onload = function () {
 	// store socket with the correct socket url in a variable called socket so that I can use it later
 	var socket = io(socketUrl);
 	var chat = document.getElementById("messages"); // messages is the chat div I made in which all chats are displayed
+	// localStorage.removeItem("messageHistory");
 
 	// This function runs when the document is fully loaded and ready (it's a shorthand for $(document).ready())
 	$(function () {
@@ -32,23 +37,31 @@ script.onload = function () {
 			contactName = chatNameInput.value;
 		});
 
-		// Adding the current date (in Date Month like 19 April) to the top of the chat
-		var messageDate = new Date().toLocaleDateString("en", {
-			day: "numeric",
-			month: "long",
-		});
-		var dateElement = $("<p class='date'>").text(messageDate);
-		messages.append(dateElement);
+		if (
+			!messageHistory ||
+			messageHistory.trim() === "" ||
+			messageHistory === null
+		) {
+			// Adding the current date (in Date Month like 19 April) to the top of the chat
+			var messageDate = new Date().toLocaleDateString("en", {
+				day: "numeric",
+				month: "long",
+			});
+			var dateElement = $("<p class='date'>").text(messageDate);
+			messages.append(dateElement);
+			//! REMOVE THIS ONCE SAVING THE CHAT WORKS ; HERE
 
-		//! REMOVE THIS ONCE SAVING THE CHAT WORKS ; HERE
+			// Adding a disclaimer to the top of the chat that the chat will disappear
+			var disclaimer = $("<p class='disclaimer'>")
+				.text("This conversation disappears when you exit or refresh the chat.") // Setting the text of the disclaimer
+				.css("display", "block"); // Setting its display property to block to make it visible
+			messages.append(disclaimer); // Appending the disclaimer element to the messages container
 
-		// Adding a disclaimer to the top of the chat that the chat will disappear
-		var disclaimer = $("<p class='disclaimer'>")
-			.text("This conversation disappears when you exit or refresh the chat.") // Setting the text of the disclaimer
-			.css("display", "block"); // Setting its display property to block to make it visible
-		messages.append(disclaimer); // Appending the disclaimer element to the messages container
-
-		//! TO HERE
+			//! TO HERE
+		} else {
+			chat.innerHTML += messageHistory;
+			console.log("MSG HISTORY:", messageHistory);
+		}
 
 		// Setting up a form submission handler, so that when an input is sent
 		// it creates a new message
@@ -79,11 +92,47 @@ script.onload = function () {
 			// Appending the message and timestamp elements to the chat interface
 			messages.append(messageElement, messageTimeStamp);
 
+			/**======================
+			 *    CHANGE SIDEBAR MSG
+			 *========================**/
+
+			var lastText = messages[0].querySelector("li:last-of-type");
+			if (lastText) {
+				// Check if the lastText variable is not null or undefined
+				if (lastText.classList.contains("sent")) {
+					// If the last <li> has the class "sent"
+					var messageContent = lastText.textContent;
+					// Create a new paragraph element
+					var messageParagraph = document.createElement("p");
+					// Set innerHTML of the paragraph with the formatted message
+					messageParagraph.innerHTML = "<em>You:</em> " + messageContent;
+					// Replace the content of lastMessage with the new paragraph
+					lastMessage.innerHTML = "";
+					lastMessage.appendChild(messageParagraph);
+				} else {
+					// If the last <li> has the class "received" or any other class
+					lastMessage.textContent = lastText.textContent;
+				}
+			} else {
+				// If no <li> elements were found
+				lastMessage.textContent = "Send message to start";
+			}
+
 			// Hiding the disclaimer once a message is received
 			disclaimer.css("display", "none");
 
 			// Scrolling to the bottom of the chat interface to show the latest message
 			scrollToBottom();
+			messageHistory = document.getElementById("messages").innerHTML;
+			localStorage.setItem("messageHistory", messageHistory);
+			// console.log("MSG HISTORY UPDATED:", messageHistory);
+		});
+
+		// Listen for server restart event from the server
+		socket.on("serverRestart", function () {
+			// Clear localStorage
+			localStorage.removeItem("messageHistory");
+			console.log("localStorage cleared due to server restart.");
 		});
 	});
 

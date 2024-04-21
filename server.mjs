@@ -24,6 +24,9 @@ app.use(express.static(__dirname + "/public"));
 const server = http.createServer(app); // Create HTTP server using Express app
 const io = new Server(server); // Create Socket.IO server
 
+// Variables
+let chatMessages = [];
+
 /**============================================
  *               MONGODB
  *=============================================**/
@@ -32,6 +35,18 @@ const port = process.env.PORT || 2000;
 import { MongoClient, ServerApiVersion } from "mongodb";
 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@apis.sobzsh5.mongodb.net/?retryWrites=true&w=majority&appName=apis`;
+
+app.use(
+	session({
+		secret: process.env.PUSHER_SECRET,
+		resave: false,
+		saveUninitialized: true,
+		store: new MongoDBStore({
+			uri: uri,
+			collection: "sessions",
+		}),
+	})
+);
 
 async function main() {
 	await mongoose.connect(uri, {
@@ -56,10 +71,16 @@ const client = new MongoClient(uri, {
 
 // When a new user connects to the server
 io.on("connection", (socket) => {
+	/**======================
+	 *    SECTION HEADER
+	 *========================**/
 	// Log a message to the server console indicating that a user has connected,
 	// along with the unique ID of the socket (connection)
 	console.log("a user connected", socket.id);
 
+	/**======================
+	 *    On disconnection
+	 *========================**/
 	// When the user disconnects from the server
 	socket.on("disconnect", () => {
 		// Log a message to the server console indicating that the user has disconnected
@@ -73,8 +94,18 @@ io.on("connection", (socket) => {
 
 		// Emit (send) the received message back to all connected clients,
 		// along with information about the sender (in this case, the unique ID of the socket)
+		chatMessages.push({ msg: msg, sender: socket.id });
 		io.emit("chat message", { msg: msg, sender: socket.id });
 	});
+
+	// Listen for the "load" event to send chat history to the client
+	socket.on("load", () => {
+		// Send chat history to the client
+		socket.emit("chat history", chatMessages);
+	});
+
+	// Emit a server restart event to the client
+	socket.emit("serverRestart");
 });
 
 /**============================================
