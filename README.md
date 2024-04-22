@@ -1,4 +1,7 @@
 # KozyKorner
+
+<img src="/public/images/kozykorner.gif" width="750px">
+
 KozyKorner is my assignment for the course Application Programming Interface during the minor Web Design & Development at the Amsterdam University of Applied Sciences, academic year 2023-2024. This course was about the use of API's in web applications and the exchange of information across servers and devices. The goals set by the administrators of this course were as follows:
 
 - Be able to make server-side rendered applications;
@@ -207,7 +210,128 @@ To my relief, Declan liked what I had so far. I discovered that my end assessmen
 
 ### Last additions
 
+The next few days were all about making the localStorage work. There were a few aspects that I had to save and load in properly when the user returned to the chat: the name of the chat (which they can edit), as well as its effect on the contact name in the left sidebar; the chats themselves, as well as their status (sent or received); and the last message in the chat, which should show up in the left sidebar as well with a "You:" in front of it if it was sent and nothing in front of it if it wasn't.
+
+I very much struggled with this over the weekend, as I wasn't sure how I was going to save the chats and information. Once I figured I could do it with localStorage, I had to decide _how_ to save everything - especially the chats. Was I going to store each list item (each chat message) individually, and if yet, how would I do that with the classes? Eventually I saved the messages to the localStorage by saving the `innerHTML` of the `#messages` element. Here, `#messages` is the unordered list containing the chat messages. The message history gets updated in my localStorage every time a message is sent. Here's what that looks like in `socket("chat message", function (data))`:
+
+```js
+
+messageHistory = document.getElementById("messages").innerHTML;
+localStorage.setItem("messageHistory", messageHistory);
+
+```
+
+This got a bit more difficult when I had to save the chat name, which changes in two places in the interface and is editable by the user. Here's how I did that:
+
+```js
+
+var chatNameInput = document.getElementById("name-defined");
+var contactNameElement = document.getElementById("contact-name");
+var storedChatName = localStorage.getItem("chatName");
+
+// Check if storedChatName is "null" string and convert it to null
+if (storedChatName === "null") {
+	storedChatName = null;
+}
+
+if (storedChatName === null) {
+	console.log("No chat name was defined");
+} else {
+	console.log("STORED CHAT NAME:", storedChatName);
+	contactNameElement.textContent = storedChatName;
+	chatNameInput.textContent = storedChatName;
+}
+
+chatNameInput.addEventListener("blur", () => {
+	var newName = chatNameInput.innerText; // Get the edited name
+	contactNameElement.textContent = newName; // Update the display in the sidebar
+	storedChatName = newName;
+	localStorage.setItem("chatName", newName); // Save the new name to localStorage
+	console.log(newName);
+});
+
+```
+
+Here I had to check whether the storedChatName was a string before I did anything else, because for some reason it saves 'null' as a string rather than a state.
+
+Lastly, the hardest part was to update the last sent message that's displayed in the sidebar. I'm sure you get the idea as it's a common pattern in messaging apps like Whatsapp and iOS Messenger: the most recent text message is displayed as a sort of preview. Achieving this in itself and even loading it in correctly was doable after I'd already fixed the localStorage (and retrievement) of other elements, but this most recent message had a complex element to it: the sender or receiver class.
+
+If a message was sent, it had to have "You:" before it, and if it had been received it didn't. But while storing the last message was a breeze with this function in `socket("chat message", function (data))`:
+
+```js
+
+var messageContent;
+var lastText = messages[0].querySelector("li:last-of-type");
+if (lastText) {
+    // Check if the lastText variable is not null or undefined
+    if (lastText.classList.contains("sent")) {
+        // If the last <li> has the class "sent"
+        messageContent = lastText.textContent;
+        // Create a new paragraph element
+        var messageParagraph = document.createElement("p");
+        // Set innerHTML of the paragraph with the formatted message
+        messageParagraph.innerHTML = "<em>You:</em> " + messageContent;
+        // Replace the content of lastMessage with the new paragraph
+        lastMessage.innerHTML = "";
+        lastMessage.appendChild(messageParagraph);
+    } else {
+        // If the last <li> has the class "received" or any other class
+        lastMessage.textContent = lastText.textContent;
+    }
+} else {
+    // If no <li> elements were found
+    lastMessage.textContent = "Send message to start";
+}
+
+```
+
+Storing the sender data took me my remaining days to figure out.
+
+Eventually - it turned out that _I_ was the problem. I wrote perfectly logical functions and pieces of code that would've worked, but I was checking for the last sent message before I loaded in my message history from the localStorage, which got me stuck in an endless loop of zero states. Once I checked for the last message _after_ the message history had been appended to the DOM, my function worked like a charm:
+
+```js
+
+// logic to load in message history here
+
+var lastSentMsg = localStorage.getItem("lastSentMsg");
+
+if (!lastSentMsg || lastSentMsg === null) {
+    console.log("No such thing as a last message");
+} else {
+    var lastText = document.querySelector("#messages li:last-of-type");
+    var msgPrev = document.querySelector("#previewmess");
+
+    if (lastText) {
+        if (lastText.classList.contains("sent")) {
+            // Create a new paragraph element
+            var messageParagraph = document.createElement("p");
+            // Set innerHTML of the paragraph with the formatted message
+            messageParagraph.innerHTML = "<em>You:</em> " + lastSentMsg;
+            // Replace the content of lastMessage with the new paragraph
+            msgPrev.innerHTML = "";
+            msgPrev.appendChild(messageParagraph);
+        } else {
+            msgPrev.textContent = lastSentMsg;
+        }
+        console.log("last text:", lastText);
+    } else {
+        // If no <li> elements were found
+        lastMessage.textContent = "Send message to start";
+    }
+}
+
+```
+
+This meant that I had a few hours before my deadline for some final touch-ups, which I used to
+
+1. Fix the sizing of the inputbox and style the send-button of the chat;
+2. Add a 'go to recent chat' CTA to the homepage;
+3. Refine the styling of the chat messages;
+4. Finish this README!
+
 ## Reflection
+
+A little over two weeks to finish an entire application was truly a race against time, but I didn't experience that in a negative way. Everything that I wished would work, works, and I had fun figuring it all out. When I look back at my code, it's all very intuitive and it makes sense to me. It's a piece of work that I am proud of and excited to talk about. I hope this excitement shows in the work I've done and its outcome.
 
 ### Prides
 
