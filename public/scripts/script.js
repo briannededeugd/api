@@ -38,17 +38,6 @@ script.onload = function () {
 			storedChatName = null;
 		}
 
-		// Check if storedChatName is "null" string and convert it to null
-		if (lastSentMsg === "null") {
-			lastSentMsg = null;
-		}
-
-		if (!lastSentMsg || lastSentMsg === null) {
-			console.log("No such thing as a last message");
-		} else {
-			lastMessage.textContent = lastSentMsg;
-		}
-
 		if (storedChatName === null) {
 			console.log("No chat name was defined");
 		} else {
@@ -91,6 +80,36 @@ script.onload = function () {
 			console.log("MSG HISTORY:", messageHistory);
 		}
 
+		// Check if storedChatName is "null" string and convert it to null
+		if (lastSentMsg === "null") {
+			lastSentMsg = null;
+		}
+
+		if (!lastSentMsg || lastSentMsg === null) {
+			console.log("No such thing as a last message");
+		} else {
+			var lastText = document.querySelector("#messages li:last-of-type");
+			var msgPrev = document.querySelector("#previewmess");
+
+			if (lastText) {
+				if (lastText.classList.contains("sent")) {
+					// Create a new paragraph element
+					var messageParagraph = document.createElement("p");
+					// Set innerHTML of the paragraph with the formatted message
+					messageParagraph.innerHTML = "<em>You:</em> " + lastSentMsg;
+					// Replace the content of lastMessage with the new paragraph
+					msgPrev.innerHTML = "";
+					msgPrev.appendChild(messageParagraph);
+				} else {
+					msgPrev.textContent = lastSentMsg;
+				}
+				console.log("last text:", lastText);
+			} else {
+				// If no <li> elements were found
+				lastMessage.textContent = "Send message to start";
+			}
+		}
+
 		// Setting up a form submission handler, so that when an input is sent
 		// it creates a new message
 		form.submit(function () {
@@ -131,7 +150,6 @@ script.onload = function () {
 				if (lastText.classList.contains("sent")) {
 					// If the last <li> has the class "sent"
 					messageContent = lastText.textContent;
-					localStorage.setItem("lastSentMsg", messageContent);
 					// Create a new paragraph element
 					var messageParagraph = document.createElement("p");
 					// Set innerHTML of the paragraph with the formatted message
