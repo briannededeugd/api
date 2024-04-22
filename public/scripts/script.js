@@ -19,7 +19,6 @@ script.onload = function () {
 	// store socket with the correct socket url in a variable called socket so that I can use it later
 	var socket = io(socketUrl);
 	var chat = document.getElementById("messages"); // messages is the chat div I made in which all chats are displayed
-	// localStorage.removeItem("messageHistory");
 
 	// This function runs when the document is fully loaded and ready (it's a shorthand for $(document).ready())
 	$(function () {
@@ -31,10 +30,39 @@ script.onload = function () {
 		// Change the new chat name to a contact name and update it in the sidebar
 		var chatNameInput = document.getElementById("name-defined");
 		var contactNameElement = document.getElementById("contact-name");
+		var storedChatName = localStorage.getItem("chatName");
+		var lastSentMsg = localStorage.getItem("lastSentMsg");
 
-		chatNameInput.addEventListener("input", () => {
-			contactNameElement.textContent = chatNameInput.textContent;
-			contactName = chatNameInput.value;
+		// Check if storedChatName is "null" string and convert it to null
+		if (storedChatName === "null") {
+			storedChatName = null;
+		}
+
+		// Check if storedChatName is "null" string and convert it to null
+		if (lastSentMsg === "null") {
+			lastSentMsg = null;
+		}
+
+		if (!lastSentMsg || lastSentMsg === null) {
+			console.log("No such thing as a last message");
+		} else {
+			lastMessage.textContent = lastSentMsg;
+		}
+
+		if (storedChatName === null) {
+			console.log("No chat name was defined");
+		} else {
+			console.log("STORED CHAT NAME:", storedChatName);
+			contactNameElement.textContent = storedChatName;
+			chatNameInput.textContent = storedChatName;
+		}
+
+		chatNameInput.addEventListener("blur", () => {
+			var newName = chatNameInput.innerText; // Get the edited name
+			contactNameElement.textContent = newName; // Update the display in the sidebar
+			storedChatName = newName;
+			localStorage.setItem("chatName", newName); // Save the new name to localStorage
+			console.log(newName);
 		});
 
 		if (
@@ -96,12 +124,14 @@ script.onload = function () {
 			 *    CHANGE SIDEBAR MSG
 			 *========================**/
 
+			var messageContent;
 			var lastText = messages[0].querySelector("li:last-of-type");
 			if (lastText) {
 				// Check if the lastText variable is not null or undefined
 				if (lastText.classList.contains("sent")) {
 					// If the last <li> has the class "sent"
-					var messageContent = lastText.textContent;
+					messageContent = lastText.textContent;
+					localStorage.setItem("lastSentMsg", messageContent);
 					// Create a new paragraph element
 					var messageParagraph = document.createElement("p");
 					// Set innerHTML of the paragraph with the formatted message
@@ -122,16 +152,20 @@ script.onload = function () {
 			disclaimer.css("display", "none");
 
 			// Scrolling to the bottom of the chat interface to show the latest message
+
 			scrollToBottom();
 			messageHistory = document.getElementById("messages").innerHTML;
 			localStorage.setItem("messageHistory", messageHistory);
-			// console.log("MSG HISTORY UPDATED:", messageHistory);
+			localStorage.setItem("chatName", storedChatName);
+			localStorage.setItem("lastSentMsg", messageContent);
 		});
 
 		// Listen for server restart event from the server
 		socket.on("serverRestart", function () {
 			// Clear localStorage
 			localStorage.removeItem("messageHistory");
+			localStorage.removeItem("chatName");
+			localStorage.removeItem("lastSentMsg");
 			console.log("localStorage cleared due to server restart.");
 		});
 	});
