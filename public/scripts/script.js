@@ -70,7 +70,7 @@ script.onload = function () {
 
 			// Adding a disclaimer to the top of the chat that the chat will disappear
 			var disclaimer = $("<p class='disclaimer'>")
-				.text("This conversation disappears when you exit or refresh the chat.") // Setting the text of the disclaimer
+				.text("This conversation disappears when you restart the application.") // Setting the text of the disclaimer
 				.css("display", "block"); // Setting its display property to block to make it visible
 			messages.append(disclaimer); // Appending the disclaimer element to the messages container
 
